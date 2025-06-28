@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgresdb-container
+    environment:
+      - TZ=Europe/London
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    container_name: zookeeper-container
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka-container
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+
+  spark:
+    image: bitnami/spark:latest
+    container_name: spark-container
+    environment:
+      - SPARK_MODE=master
+    ports:
+      - "7077:7077"
+      - "8080:8080"
+    volumes:
+      - ./app:/app
+    depends_on:
+      - kafka
+
+  spark-worker:
+    image: bitnami/spark:latest
+    container_name: spark-worker-container
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-container:7077
+    depends_on:
+      - spark
+
+  # cassandra:
+  #   image: cassandra:3
+  #   container_name: cassandradb-container
+  #   ports:
+  #   - "7000:7000"
+  #   - "9042:9042"
+  #   environment:
+  #   - "CASSANDRA_CLUSTER_NAME=OUR_DOCKERIZED_CASSANDRA_SINGLE_NODE_CLUSTER"
