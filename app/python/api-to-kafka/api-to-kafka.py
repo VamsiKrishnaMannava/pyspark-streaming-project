@@ -6,7 +6,7 @@ from kafka import KafkaProducer
 import json
 
 
-KAFKA_BROKER = 'localhost:9092'
+KAFKA_BROKER = 'kafka-container:9092'
 KAFKA_TOPIC = 'randomuser-topic'
 API_URL = 'https://randomuser.me/api/'
 BATCH_INTERVAL = 10  # seconds

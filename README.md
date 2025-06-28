@@ -1,14 +1,3 @@
-# The official repository for the Rock the JVM Spark Streaming with Scala course
-
-This repository contains the code we wrote during the *Udemy* edition of [Rock the JVM's Spark Streaming with Scala](https://rockthejvm.com/course/spark-streaming). Unless explicitly mentioned, the code in this repository is exactly what was caught on camera.
-
-## How to install
-
-- install Docker
-- either clone the repo or download as zip
-- open with IntelliJ as an SBT project
-- in a terminal window, navigate to the folder where you downloaded this repo and run `docker-compose up` to build and start the containers - we will need them to integrate various stuff e.g. Kafka with  Spark
-
 ### How to start
 
 Clone this repository and checkout the `start` tag by running the following in the repo folder:
@@ -24,29 +13,46 @@ Checkout the master branch:
 git checkout master
 ```
 
-### How to run an intermediate state
 
-The repository was built while recording the lectures. Prior to each lecture, I tagged each commit so you can easily go back to an earlier state of the repo!
+* `2.3-streaming# Spark Streaming Project: Spark, Kafka, and Python Integration
 
-The tags are as follows (most recent first):
+## How to Run
 
-* `5.3-watermarks`
-* `5.2-processing-time-windows`
-* `5.1-event-time-windows`
-* `4.4-cassandra`
-* `4.3-jdbc`
-* `4.2-kafka-dstreams`
-* `4.1-kafka-structured-streaming`
-* `3.2-dstreams-transformations`
-* `3.1-dstreams`
-* `2.4-streaming-datasets`
-* `2.3-streaming-joins`
-* `2.2-streaming-aggregations`
-* `2.1-streaming-dataframes`
-* `1.2-spark-recap`
-* `1.1-scala-recap`
+### 1. Start Docker Compose
 
-When you watch a lecture, you can `git checkout` the appropriate tag and the repo will go back to the exact code I had when I started the lecture.
+Start all services (Postgres, Kafka, Spark, etc.):
+
+```bash
+docker compose up -d
+```
+
+---
+
+### 2. Run the Kafka Producer Script in Spark Container
+
+Open a new terminal and execute:
+
+```bash
+docker exec -it spark-container bash
+cd /app/python/api-to-kafka
+python api-to-kafka.py
+```
+
+This script fetches data from the API and sends it to the Kafka topic `randomuser-topic`.
+
+---
+
+### 3. Consume Kafka Messages from the Console
+
+To view messages in the `randomuser-topic` topic, run:
+
+```bash
+docker exec -it kafka-container kafka-console-consumer.sh --bootstrap-server kafka-container:9092 --topic randomuser-topic --from-beginning
+```
+
+This will print all messages sent to the topic.
+
+---
 
 ### For questions or suggestions
 
@@ -54,5 +60,43 @@ If you have changes to suggest to this repo, either
 - submit a GitHub issue
 - tell me in the course Q/A forum
 - submit a pull request!
+
+## Running Spark and Kafka Integration
+
+### 1. Start Docker Compose
+
+Start all services (Postgres, Kafka, Spark, etc.):
+
+```bash
+docker compose up -d
+```
+
+---
+
+### 2. Run the Kafka Producer Script in Spark Container
+
+Open a new terminal and execute:
+
+```bash
+docker exec -it spark-container bash
+cd /app/python/api-to-kafka
+python api-to-kafka.py
+```
+
+This script fetches data from the API and sends it to the Kafka topic `randomuser-topic`.
+
+---
+
+### 3. Consume Kafka Messages from the Console
+
+To view messages in the `randomuser-topic` topic, run:
+
+```bash
+docker exec -it kafka-container kafka-console-consumer.sh --bootstrap-server kafka-container:9092 --topic randomuser-topic --from-beginning
+```
+
+This will print all messages sent to the topic.
+
+---
 
 
