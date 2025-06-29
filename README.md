@@ -1,17 +1,4 @@
-### How to start
 
-Clone this repository and checkout the `start` tag by running the following in the repo folder:
-
-```
-git checkout start
-```
-
-### How to see the final code
-
-Checkout the master branch:
-```
-git checkout master
-```
 
 
 * `2.3-streaming# Spark Streaming Project: Spark, Kafka, and Python Integration
