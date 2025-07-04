@@ -1,5 +1,5 @@
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import lit
+# from pyspark.sql import SparkSession
+# from pyspark.sql.functions import lit
 import requests
 import time
 from kafka import KafkaProducer
@@ -26,9 +26,7 @@ if __name__ == "__main__":
     producer = KafkaProducer(bootstrap_servers=KAFKA_BROKER)
 
     # Spark session (not strictly needed for this polling loop, but included for completeness)
-    spark = SparkSession.builder \
-        .appName("APIToKafka") \
-        .getOrCreate()
+    # spark = SparkSession.builder.appName("APIToKafka").getOrCreate()
 
     print(f"Starting to poll {API_URL} every {BATCH_INTERVAL} seconds and send to Kafka topic '{KAFKA_TOPIC}'...")
 
@@ -45,4 +43,4 @@ if __name__ == "__main__":
         print("Stopped by user.")
     finally:
         producer.close()
-        spark.stop()
+        #spark.stop()
