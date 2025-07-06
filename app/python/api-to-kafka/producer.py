@@ -1,4 +1,4 @@
-# Consumer: Python script to fetch random user data from an API and send it to Kafka
+# Producer: Python script to fetch random user data from an API and send it to Kafka
 # It runs in a loop, fetching data every 10 seconds and sending it to the specified
 # Kafka topic. The fetched data is printed to the console for verification.
 # app/python/api-to-kafka/api-to-kafka.py
