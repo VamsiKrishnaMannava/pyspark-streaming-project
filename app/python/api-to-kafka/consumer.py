@@ -1,5 +1,9 @@
-# from pyspark.sql import SparkSession
-# from pyspark.sql.functions import lit
+# Consumer: Python script to fetch random user data from an API and send it to Kafka
+# It runs in a loop, fetching data every 10 seconds and sending it to the specified
+# Kafka topic. The fetched data is printed to the console for verification.
+# app/python/api-to-kafka/api-to-kafka.py
+# This script doesn't use spark coding
+
 import requests
 import time
 from kafka import KafkaProducer
@@ -25,9 +29,6 @@ if __name__ == "__main__":
     # Initialize Kafka producer
     producer = KafkaProducer(bootstrap_servers=KAFKA_BROKER)
 
-    # Spark session (not strictly needed for this polling loop, but included for completeness)
-    # spark = SparkSession.builder.appName("APIToKafka").getOrCreate()
-
     print(f"Starting to poll {API_URL} every {BATCH_INTERVAL} seconds and send to Kafka topic '{KAFKA_TOPIC}'...")
 
     try:
@@ -43,4 +44,3 @@ if __name__ == "__main__":
         print("Stopped by user.")
     finally:
         producer.close()
-        #spark.stop()
