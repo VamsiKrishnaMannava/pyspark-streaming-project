@@ -48,6 +48,7 @@ services:
       - ./app:/app
     depends_on:
       - kafka
+    entrypoint: ["/bin/bash", "-c", "/app/init.sh && /opt/bitnami/scripts/spark/entrypoint.sh /opt/bitnami/scripts/spark/run.sh"]
 
   spark-worker:
     image: bitnami/spark:latest
@@ -56,8 +57,12 @@ services:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-container:7077
       - HOME=/opt/bitnami/spark
+    volumes:
+      - ./app:/app
     depends_on:
       - spark
+    entrypoint: ["/bin/bash", "-c", "/app/init.sh && /opt/bitnami/scripts/spark/entrypoint.sh /opt/bitnami/scripts/spark/run.sh"]
+
 
   # cassandra:
   #   image: cassandra:3
