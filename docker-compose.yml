@@ -40,7 +40,7 @@ services:
     container_name: spark-container
     environment:
       - SPARK_MODE=master
-      - HOME=/tmp
+      - HOME=/root
     ports:
       - "7077:7077"
       - "8080:8080"
@@ -55,7 +55,7 @@ services:
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-container:7077
-      - HOME=/tmp
+      - HOME=/root
     depends_on:
       - spark
 
