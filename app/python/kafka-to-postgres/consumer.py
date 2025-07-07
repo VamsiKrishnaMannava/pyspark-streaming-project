@@ -27,28 +27,28 @@ df = spark.readStream \
 # Kafka value is in bytes, convert to string
 json_df = df.selectExpr("CAST(value AS STRING) as json_str")
 
-# Parse JSON and extract fields
-parsed_df = json_df.select(from_json(col("json_str"), 
-    StructType().add("results", 
-        StructType().add("gender", StringType())
-                    .add("email", StringType())
-                    .add("phone", StringType())
-                    .add("cell", StringType())
-                    .add("nat", StringType())
-    )
-).alias("data"))
+# # Parse JSON and extract fields
+# parsed_df = json_df.select(from_json(col("json_str"), 
+#     StructType().add("results", 
+#         StructType().add("gender", StringType())
+#                     .add("email", StringType())
+#                     .add("phone", StringType())
+#                     .add("cell", StringType())
+#                     .add("nat", StringType())
+#     )
+# ).alias("data"))
 
-# Flatten the structure (assuming one result per message)
-flat_df = parsed_df.select(
-    col("data.results.gender").alias("gender"),
-    col("data.results.email").alias("email"),
-    col("data.results.phone").alias("phone"),
-    col("data.results.cell").alias("cell"),
-    col("data.results.nat").alias("nat")
-)
+# # Flatten the structure (assuming one result per message)
+# flat_df = parsed_df.select(
+#     col("data.results.gender").alias("gender"),
+#     col("data.results.email").alias("email"),
+#     col("data.results.phone").alias("phone"),
+#     col("data.results.cell").alias("cell"),
+#     col("data.results.nat").alias("nat")
+# )
 
 # write streams to console for debugging
-query = flat_df.writeStream \
+query = json_df.writeStream \
     .outputMode("append") \
     .format("console") \
     .start()
