@@ -48,7 +48,7 @@ services:
       - ./app:/app
     depends_on:
       - kafka
-    entrypoint: ["/bin/bash", "-c", "/app/init.sh && /opt/bitnami/scripts/spark/entrypoint.sh /opt/bitnami/scripts/spark/run.sh"]
+    command: ["/bin/bash", "-c", "/app/init.sh && /opt/bitnami/scripts/spark/entrypoint.sh /opt/bitnami/scripts/spark/run.sh"]
 
   spark-worker:
     image: bitnami/spark:latest
@@ -61,7 +61,7 @@ services:
       - ./app:/app
     depends_on:
       - spark
-    entrypoint: ["/bin/bash", "-c", "/app/init.sh && /opt/bitnami/scripts/spark/entrypoint.sh /opt/bitnami/scripts/spark/run.sh"]
+    command: ["/bin/bash", "-c", "/app/init.sh && /opt/bitnami/scripts/spark/entrypoint.sh /opt/bitnami/scripts/spark/run.sh"]
 
 
   # cassandra:
