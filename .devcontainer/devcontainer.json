@@ -1,8 +1,7 @@
 {
   "name": "Spark DevContainer",
-  "dockerAttach": {
-    "containerName": "spark-container"
-  },
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "spark",
   "workspaceFolder": "/app",
   "customizations": {
     "vscode": {
@@ -11,11 +10,10 @@
       },
       "extensions": [
         "ms-python.python",
-        "ms-toolsai.jupyter",
-        "VisualStudioExptTeam.vscodeintellicode"
+        "ms-toolsai.jupyter"
       ]
     }
   },
   "forwardPorts": [7077, 8080],
-  "postAttachCommand": "echo 'Attached to Spark container: spark-container'"
+  "waitFor": "onCreateCommand"
 }
