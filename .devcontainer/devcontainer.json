@@ -1,7 +1,8 @@
 {
   "name": "Spark DevContainer",
-  "dockerComposeFile": "../docker-compose.yml",
-  "service": "spark",
+  "dockerAttach": {
+    "containerName": "spark-container"
+  },
   "workspaceFolder": "/app",
   "customizations": {
     "vscode": {
@@ -14,6 +15,5 @@
       ]
     }
   },
-  "forwardPorts": [7077, 8080],
-  "waitFor": "onCreateCommand"
+  "forwardPorts": [7077, 8080]
 }
