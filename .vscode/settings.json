@@ -1,12 +1,12 @@
-{
-  "terminal.integrated.profiles.linux": {
-    "SparkContainer": {
-      "path": "bash",
-      "args": [
-        "-c",
-        "docker exec -it spark-container bash"
-      ]
-    }
-  },
-  "terminal.integrated.defaultProfile.linux": "SparkContainer"
-}
+// {
+//   "terminal.integrated.profiles.linux": {
+//     "SparkContainer": {
+//       "path": "bash",
+//       "args": [
+//         "-c",
+//         "docker exec -it spark-container bash"
+//       ]
+//     }
+//   },
+//   "terminal.integrated.defaultProfile.linux": "SparkContainer"
+// }
