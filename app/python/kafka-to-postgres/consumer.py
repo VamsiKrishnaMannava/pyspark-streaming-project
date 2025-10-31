@@ -16,7 +16,7 @@ spark = SparkSession.builder \
     .appName("KafkaToPostgres") \
     .getOrCreate()
 
-# Read from Kafka
+# Read from Kafka #.option("kafka.bootstrap.servers", "kafka-container:9092") \
 df = spark.readStream \
     .format("kafka") \
     .option("kafka.bootstrap.servers", "kafka-container:9092") \

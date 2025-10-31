@@ -5,28 +5,28 @@ networks:
     driver: bridge
 
 services:
-  postgres:
-    image: postgres:16
-    container_name: postgresdb-container
-    environment:
-      - TZ=Europe/London
-      - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=docker
-      - POSTGRES_DB=postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./sql:/docker-entrypoint-initdb.d
-    networks:
-      - app-network
+  # postgres:
+  #   image: postgres:16
+  #   container_name: postgresdb-container
+  #   environment:
+  #     - TZ=Europe/London
+  #     - POSTGRES_USER=docker
+  #     - POSTGRES_PASSWORD=docker
+  #     - POSTGRES_DB=postgres
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - ./sql:/docker-entrypoint-initdb.d
+  #   networks:
+  #     - app-network
 
   kafka:
     image: apache/kafka:4.1.0
     container_name: kafka-container
     environment:
       KAFKA_NODE_ID: 1
-      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://host.docker.internal:9092   # Use this if producing/consuming from Windows/WSL/host
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-container:9093
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_PROCESS_ROLES: broker,controller
@@ -35,40 +35,41 @@ services:
     ports:
       - "9092:9092"
       - "9093:9093"
-    networks:
-      - app-network
-
+    # networks:
+    #   - app-network
   
-  spark-master:
-    image: apache/spark:latest
-    container_name: spark-master
-    command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
-    environment:
-      - SPARK_NO_DAEMONIZE=1
-    ports:
-      - "7077:7077"
-      - "8080:8080"
-    volumes:
-      - ./app:/app
-    networks:
-      - app-network
+  # spark-master:
+  #   image: apache/spark:latest
+  #   container_name: spark-master
+  #   command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+  #   environment:
+  #     - SPARK_NO_DAEMONIZE=1
+  #   ports:
+  #     - "7077:7077"
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./app:/app
+  #     - ./app/python/kafka-to-postgres/jars:/opt/spark/custom-jars
+  #   networks:
+  #     - app-network
 
-  spark-worker:
-    image: apache/spark:latest
-    container_name: spark-worker
-    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
-    environment:
-      - SPARK_WORKER_CORES=2
-      - SPARK_WORKER_MEMORY=2g
-      - SPARK_NO_DAEMONIZE=1
-    depends_on:
-      - spark-master
-    ports:
-      - "8081:8081"
-    volumes:
-      - ./app:/app
-    networks:
-      - app-network
+  # spark-worker:
+  #   image: apache/spark:latest
+  #   container_name: spark-worker
+  #   command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+  #   environment:
+  #     - SPARK_WORKER_CORES=2
+  #     - SPARK_WORKER_MEMORY=2g
+  #     - SPARK_NO_DAEMONIZE=1
+  #   depends_on:
+  #     - spark-master
+  #   ports:
+  #     - "8081:8081"
+  #   volumes:
+  #     - ./app:/app
+  #     - ./app/python/kafka-to-postgres/jars:/opt/spark/custom-jars
+  #   networks:
+  #     - app-network
 
 
   # cassandra:
