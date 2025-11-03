@@ -41,13 +41,6 @@ This will print all messages sent to the topic.
 
 ---
 
-### For questions or suggestions
-
-If you have changes to suggest to this repo, either
-- submit a GitHub issue
-- tell me in the course Q/A forum
-- submit a pull request!
-
 ## Running Spark and Kafka Integration
 
 ### 1. Start Docker Compose
