@@ -1,7 +1,7 @@
 
 
 
-* `2.3-streaming# Spark Streaming Project: Spark, Kafka, and Python Integration
+# Spark Streaming Project: Spark, Kafka, and Python Integration
 
 ## How to Run
 
