@@ -60,7 +60,6 @@ services:
       - "8080:8080"
     volumes:
       - ./app:/app
-      - ./app/python/kafka-to-postgres/jars:/opt/spark/custom-jars
     networks:
       - app-network
 
@@ -78,7 +77,6 @@ services:
       - "8081:8081"
     volumes:
       - ./app:/app
-      - ./app/python/kafka-to-postgres/jars:/opt/spark/custom-jars
     networks:
       - app-network
   
