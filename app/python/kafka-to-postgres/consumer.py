@@ -15,11 +15,12 @@ user_schema = StructType() \
 spark = SparkSession.builder \
     .appName("KafkaToPostgres") \
     .getOrCreate()
+spark.sparkContext.setLogLevel("ERROR")
 
 # Read from Kafka #.option("kafka.bootstrap.servers", "kafka-container:9092") \
 df = spark.readStream \
     .format("kafka") \
-    .option("kafka.bootstrap.servers", "kafka-container:9092") \
+    .option("kafka.bootstrap.servers", "kafka-container:29092") \
     .option("subscribe", "randomuser-topic") \
     .option("startingOffsets", "latest") \
     .load()
@@ -51,6 +52,8 @@ json_df = df.selectExpr("CAST(value AS STRING) as json_str")
 query = json_df.writeStream \
     .outputMode("append") \
     .format("console") \
+    .option("truncate", "false") \
+    .trigger(processingTime="10 seconds") \
     .start()
 
 # Uncomment the following lines to write to Postgres

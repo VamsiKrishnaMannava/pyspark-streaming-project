@@ -28,6 +28,8 @@ services:
       ZOOKEEPER_TICK_TIME: 2000 
     ports: 
       - 2181:2181
+    networks:
+      - app-network
 
   kafka:
     image: confluentinc/cp-kafka:7.4.0
@@ -39,11 +41,47 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,DOCKER://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,DOCKER://kafka-container:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,DOCKER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      # KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 
+    networks:
+      - app-network
 
-    # networks:
-    #   - app-network
+  spark-master:
+    build: .
+    container_name: spark-master
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+    environment:
+      - SPARK_NO_DAEMONIZE=1
+    ports:
+      - "7077:7077"
+      - "8080:8080"
+    volumes:
+      - ./app:/app
+      - ./app/python/kafka-to-postgres/jars:/opt/spark/custom-jars
+    networks:
+      - app-network
+
+  spark-worker:
+    build: .
+    container_name: spark-worker
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    environment:
+      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_MEMORY=2g
+      - SPARK_NO_DAEMONIZE=1
+    depends_on:
+      - spark-master
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./app:/app
+      - ./app/python/kafka-to-postgres/jars:/opt/spark/custom-jars
+    networks:
+      - app-network
   
   # spark-master:
   #   image: apache/spark:latest
