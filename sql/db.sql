@@ -32,3 +32,5 @@ CREATE TABLE users (
     picture_thumbnail   VARCHAR(255),
     nationality         VARCHAR(255)
 );
+
+SELECT COUNT(1) AS USR_CNT FROM USERS;
