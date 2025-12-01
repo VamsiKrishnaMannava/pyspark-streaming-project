@@ -5,20 +5,20 @@ networks:
     driver: bridge
 
 services:
-  # postgres:
-  #   image: postgres:16
-  #   container_name: postgresdb-container
-  #   environment:
-  #     - TZ=Europe/London
-  #     - POSTGRES_USER=docker
-  #     - POSTGRES_PASSWORD=docker
-  #     - POSTGRES_DB=postgres
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - ./sql:/docker-entrypoint-initdb.d
-  #   networks:
-  #     - app-network
+  postgres:
+    image: postgres:latest
+    container_name: postgresdb-container
+    environment:
+      - TZ=Europe/London
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0

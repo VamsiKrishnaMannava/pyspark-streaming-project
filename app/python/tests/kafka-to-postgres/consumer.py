@@ -75,7 +75,7 @@ randomuser_schema = StructType([
 spark = SparkSession.builder \
     .appName("KafkaToPostgres") \
     .getOrCreate()
-#spark.sparkContext.setLogLevel("ERROR")
+spark.sparkContext.setLogLevel("ERROR")
 
 # Read from Kafka #.option("kafka.bootstrap.servers", "kafka-container:9092") \
 df = spark.readStream \
@@ -132,28 +132,27 @@ flat_df = users_df.select(
 
 
 # write streams to console for debugging
-# query = flat_df.writeStream \
-#     .outputMode("append") \
-#     .format("console") \
-#     .option("truncate", "false") \
-#     .trigger(processingTime="10 seconds") \
-#     .start()
+query = flat_df.writeStream \
+    .outputMode("append") \
+    .format("console") \
+    .option("truncate", "false") \
+    .trigger(processingTime="10 seconds") \
+    .start()
 
 # Uncomment the following lines to write to Postgres
 
-# Write to Postgres
-query = flat_df.writeStream \
-    .foreachBatch(lambda batch_df, _: batch_df.write \
-        .format("jdbc") \
-        .option("url", "jdbc:postgresql://postgresdb-container:5432/postgres") \
-        .option("dbtable", "public.users") \
-        .option("user", "docker") \
-        .option("password", "docker") \
-        .option("driver", "org.postgresql.Driver") \
-        .mode("append") \
-        .save()) \
-    .outputMode("append") \
-    .trigger(processingTime="10 seconds") \
-    .start()
+# # Write to Postgres
+# query = flat_df.writeStream \
+#     .foreachBatch(lambda batch_df, _: batch_df.write \
+#         .format("jdbc") \
+#         .option("url", "jdbc:postgresql://postgresdb-container:5432/postgres") \
+#         .option("dbtable", "users") \
+#         .option("user", "docker") \
+#         .option("password", "docker") \
+#         .option("driver", "org.postgresql.Driver") \
+#         .mode("append") \
+#         .save()) \
+#     .outputMode("append") \
+#     .start()
 
 query.awaitTermination()
