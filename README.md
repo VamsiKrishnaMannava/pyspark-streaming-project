@@ -1,5 +1,5 @@
-PySpark Kafka Streaming Pipeline
-================================
+PySpark Kafka Streaming Pipeline and Chatbot to answer the enduser prompts
+==========================================================================
 
 This project demonstrates a real-time data pipeline that ingests user data from the Random User API, streams it through Kafka, processes it using PySpark Structured Streaming, and stores the results in a PostgreSQL database. A chatbot interface can then query the database to answer user questions.
 
