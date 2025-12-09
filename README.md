@@ -3,6 +3,12 @@ PySpark Kafka Streaming Pipeline
 
 This project demonstrates a real-time data pipeline that ingests user data from the Random User API, streams it through Kafka, processes it using PySpark Structured Streaming, and stores the results in a PostgreSQL database. A chatbot interface can then query the database to answer user questions.
 
+📷 Architecture Diagram
+-----------------------
+
+Refer to the attached image for a visual representation of the pipeline.
+![alt text](<Architecture diagram.png>)
+
 🧱 Architecture Overview
 ------------------------
 
@@ -79,14 +85,6 @@ This query is answered by fetching data from the PostgreSQL database populated b
 *   Ensure all services are up using docker-compose up --build.
 *   Kafka listeners are configured for both host and container access.
 *   Spark jars are dynamically resolved via Maven.
-    
-
-📷 Architecture Diagram
------------------------
-
-Refer to the attached image for a visual representation of the pipeline.
-![alt text](<Architecture diagram.png>)
-
 
 🧠 Future Enhancements
 ----------------------
