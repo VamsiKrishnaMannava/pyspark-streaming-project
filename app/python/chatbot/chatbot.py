@@ -4,7 +4,7 @@ import requests
 import json, re
 
 # --- CONFIG ---
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = "sk-or-v1-7106540af52"  # generate this API key by registering with openrouter.ai
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 # --- STEP 1: Connect to DB with Pandas ---
